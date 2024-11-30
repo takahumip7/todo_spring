@@ -19,7 +19,7 @@ public class TaskRepository {
      *
      * @param taskMapper タスクデータへのマッパー
      */
-    public TaskRepository(TaskMapper taskMapper){
+    public TaskRepository(TaskMapper taskMapper) {
         this.taskMapper = taskMapper;
     }
 
@@ -28,7 +28,7 @@ public class TaskRepository {
      *
      * @return タスクのリスト
      */
-    public List<Task> findAll(){
+    public List<Task> findAll() {
         return taskMapper.findAll();
     }
 
@@ -37,7 +37,7 @@ public class TaskRepository {
      *
      * @param task 保存するタスク
      */
-    public void save(Task task){
+    public void save(Task task) {
         taskMapper.save(task);
     }
 }

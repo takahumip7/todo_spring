@@ -17,7 +17,7 @@ import java.util.List;
  * タスクの検索、保存、更新などの機能を提供します。
  */
 @Service
-public class TaskServiceImpl implements TaskService{
+public class TaskServiceImpl implements TaskService {
 
     @Autowired
     TaskRepository taskRepository;
@@ -28,13 +28,13 @@ public class TaskServiceImpl implements TaskService{
      * @return List<Task> タスク一覧。
      */
     @Override
-    public List<Task> findAll(){
+    public List<Task> findAll() {
         return taskRepository.findAll();
     }
 
     @Override
     @Transactional
-    public String save(TaskForm taskForm){
+    public String save(TaskForm taskForm) {
 
         //変換処理
         Task task = convertToTask(taskForm);
@@ -48,7 +48,7 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public Task convertToTask(TaskForm taskForm){
+    public Task convertToTask(TaskForm taskForm) {
         Task task = new Task();
         task.setTaskId(taskForm.getTaskId());
         task.setTitle(taskForm.getTitle());

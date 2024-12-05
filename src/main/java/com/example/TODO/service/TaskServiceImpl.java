@@ -6,9 +6,9 @@ import com.example.TODO.entity.Task;
 import com.example.TODO.form.TaskForm;
 import com.example.TODO.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.List;
 
@@ -32,6 +32,13 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.findAll();
     }
 
+    /**
+     * タスクを保存するメソッドです。
+     *
+     * @param task タスクエンティティ
+     * @return String 完了メッセージ
+     * @throws OptimisticLockingFailureException 楽観ロックエラーが発生した場合
+     */
     @Override
     @Transactional
     public String save(TaskForm taskForm) {
@@ -39,16 +46,38 @@ public class TaskServiceImpl implements TaskService {
         //変換処理
         Task task = convertToTask(taskForm);
 
-        //登録処理の場合
-        taskRepository.save(task);
+        //完了メッセージを宣言
+        String completeMessage = null;
 
-        //完了メッセージをセット
-        String completeMessage = Constants.REGISTER_COMPLETE;
-        return completeMessage;
+        if (task.getTaskId() != 0){
+            //変換処理の場合
+
+            //楽観ロック
+            int updateCount = taskRepository.update(task);
+            if (updateCount == 0){
+                throw new OptimisticLockingFailureException("楽観ロックエラー");
+            }
+            //完了メッセージをセット
+            completeMessage = Constants.EDIT_COMPLETE;
+            return completeMessage;
+        }else {
+            //登録処理の場合
+            taskRepository.save(task);
+
+            //完了メッセージをセット
+            completeMessage = Constants.REGISTER_COMPLETE;
+            return completeMessage;
+        }
     }
 
+    /**
+     * タスクフォームをタスクエンティティに変換するメソッドです。
+     *
+     * @param taskForm タスクフォーム
+     * @return 変換されたタスクエンティティ
+     */
     @Override
-    public Task convertToTask(TaskForm taskForm) {
+    public Task convertToTask(TaskForm taskForm){
         Task task = new Task();
         task.setTaskId(taskForm.getTaskId());
         task.setTitle(taskForm.getTitle());
@@ -57,5 +86,41 @@ public class TaskServiceImpl implements TaskService {
         task.setStatus(taskForm.getStatus());
         task.setUpdatedAt(taskForm.getUpdatedAt());
         return task;
+    }
+
+    /**
+     * タスクIDに基づいて1件のタスクを取得し、対応するタスクフォームに変換するメソッドです。
+     *
+     * @param taskId タスクID
+     * @return 対応するタスクフォーム
+     */
+    @Override
+    public TaskForm getTask(int taskId){
+
+        //タスクを取得
+        Task task = taskRepository.getTask(taskId);
+
+        //変換処理
+        TaskForm taskForm = convertToTaskForm(task);
+
+        return taskForm;
+    }
+
+    /**
+     * タスクエンティティをタスクフォームに変換するメソッドです。
+     *
+     * @param task タスクエンティティ
+     * @return 変換されたタスクフォーム
+     */
+    @Override
+    public TaskForm convertToTaskForm(Task task){
+        TaskForm taskForm = new TaskForm();
+        taskForm.setTaskId(task.getTaskId());
+        taskForm.setTitle(task.getTitle());
+        taskForm.setDescription(task.getDescription());
+        taskForm.setDeadline(task.getDeadline());
+        taskForm.setStatus(task.getStatus());
+        taskForm.setUpdatedAt(task.getUpdatedAt());
+        return taskForm;
     }
 }

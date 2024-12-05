@@ -15,4 +15,16 @@
         VALUES
             (#{title}, #{description}, #{deadline}, 1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,0);
     </insert>
+
+    <!-- タスクIDを指定してタスクを取得 -->
+    <select id="getTask" resultType="com.example.TODO.entity.Task">
+        SELECT * FROM task where taskId = #{taskId} and deleteFlg = 0;
+    </select>
+
+    <!-- タスクの更新 -->
+    <update id="update" parameterType="com.example.TODO.entity.Task">
+        UPDATE task SET title = #{title}, description = #{description}, deadline = #{deadline}, status = #{status},
+        updated_at = CURRENT_TIMESTAMP WHERE taskId = #{taskId} and updated_at = #{updatedAt};
+    </update>
+
 </mapper>

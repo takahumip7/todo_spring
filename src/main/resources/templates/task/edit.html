@@ -32,6 +32,19 @@
                     <input type="datetime-local" class="form-control" name="deadline" th:value="*{deadline}">
                     <div th:if="${#fields.hasErrors('deadline')}" th:errors="*{deadline}" class="text-danger"></div>
                 </div>
+                <div class="form-group mb-3">
+                    <label>status</label>
+                    <select name="status">
+                        <option value="1" th:selected="*{status == 1}">未着手</option>
+                        <option value="2" th:selected="*{status == 2}">作業中</option>
+                        <option value="3" th:selected="*{status == 3}">完了</option>
+                    </select>
+                    <div th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="text-danger"></div>
+                </div>
+
+                <input type="hidden" name="taskId" th:value="*{taskId}">
+                <input type="hidden" name="updatedAt" th:value="*{updatedAt}">
+
                 <!-- 送信ボタン -->
                 <button type="submit" class="btn btn-primary" value="Confirm">Confirm</button>
                 <a type="button" class="btn btn-outline-secondary" th:href="@{/task/list}" th:object="${taskForm}">back</a>

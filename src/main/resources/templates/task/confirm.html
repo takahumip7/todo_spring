@@ -29,6 +29,10 @@
                     <label>Deadline</label>
                     <p th:text="${#temporals.format(taskForm.deadline, 'yyyy/MM/dd HH:mm')}">Formatted Deadline</p>
                 </div>
+                <div class="mb-3">
+                    <label>status</label>
+                    <p th:text="${taskForm.status == 1 ? '未着手' : taskForm.status == 2 ? '作業中' : '完了'}">Status</p>
+                </div>
             </div>
 
             <div class="d-flex justify-content-start">
@@ -36,6 +40,9 @@
                     <input type="hidden" name="title" th:field="*{title}">
                     <input type="hidden" name="description" th:field="*{description}">
                     <input type="hidden" name="deadline" th:field="*{deadline}">
+                    <input type="hidden" name="status" th:field="*{status}">
+                    <input type="hidden" name="taskId" th:field="*{taskId}">
+                    <input type="hidden" name="updatedAt" th:field="*{updatedAt}">
                     <!-- 送信ボタン -->
                     <button type="submit" class="btn btn-primary me-2" value="submit">submit</button>
                 </form>

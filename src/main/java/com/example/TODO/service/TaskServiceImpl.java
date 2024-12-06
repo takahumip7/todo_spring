@@ -70,23 +70,6 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
-    /**
-     * タスクフォームをタスクエンティティに変換するメソッドです。
-     *
-     * @param taskForm タスクフォーム
-     * @return 変換されたタスクエンティティ
-     */
-    @Override
-    public Task convertToTask(TaskForm taskForm){
-        Task task = new Task();
-        task.setTaskId(taskForm.getTaskId());
-        task.setTitle(taskForm.getTitle());
-        task.setDescription(taskForm.getDescription());
-        task.setDeadline(taskForm.getDeadline());
-        task.setStatus(taskForm.getStatus());
-        task.setUpdatedAt(taskForm.getUpdatedAt());
-        return task;
-    }
 
     /**
      * タスクIDに基づいて1件のタスクを取得し、対応するタスクフォームに変換するメソッドです。
@@ -104,6 +87,24 @@ public class TaskServiceImpl implements TaskService {
         TaskForm taskForm = convertToTaskForm(task);
 
         return taskForm;
+    }
+
+    /**
+     * タスクフォームをタスクエンティティに変換するメソッドです。
+     *
+     * @param taskForm タスクフォーム
+     * @return 変換されたタスクエンティティ
+     */
+    @Override
+    public Task convertToTask(TaskForm taskForm){
+        Task task = new Task();
+        task.setTaskId(taskForm.getTaskId());
+        task.setTitle(taskForm.getTitle());
+        task.setDescription(taskForm.getDescription());
+        task.setDeadline(taskForm.getDeadline());
+        task.setStatus(taskForm.getStatus());
+        task.setUpdatedAt(taskForm.getUpdatedAt());
+        return task;
     }
 
     /**

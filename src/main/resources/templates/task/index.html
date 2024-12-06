@@ -40,7 +40,7 @@
                     <tbody>
                     <!-- Sample Data -->
                     <tr th:each="taskList : ${taskList}" th:object="${taskList}">
-                    <th scope="row"　th:text="*{taskId}">1</th>
+                    <th scope="row" th:text="*{taskId}">1</th>
                     <td th:text="*{title}">Title</td>
                     <td th:text="*{description}">description</td>
                     <td th:text="${#temporals.format(taskList.deadline, 'yyyy/MM/dd HH:mm')}">Formatted Deadline</td>

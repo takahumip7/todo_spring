@@ -44,7 +44,7 @@ public interface TaskMapper {
     /**
      * タスクを削除します。
      *
-     * @param task 削除するタスク
+     * @param taskId 削除するタスク
      * @return 削除された行数
      */
     int delete(int taskId);

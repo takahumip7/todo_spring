@@ -1,16 +1,17 @@
 package com.example.TODO.service;
 
+import java.util.List;
 
-import com.example.TODO.common.Constants;
-import com.example.TODO.entity.Task;
-import com.example.TODO.form.TaskForm;
-import com.example.TODO.repository.TaskRepository;
+import com.example.TODO.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.example.TODO.common.Constants;
+import com.example.TODO.entity.Task;
+import com.example.TODO.form.TaskForm;
+import com.example.TODO.repository.TaskRepository;
 
 /**
  * タスク関連のビジネスロジックを担当するサービスクラスです。
@@ -32,6 +33,7 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.findAll();
     }
 
+
     /**
      * タスクを保存するメソッドです。
      *
@@ -49,8 +51,8 @@ public class TaskServiceImpl implements TaskService {
         //完了メッセージを宣言
         String completeMessage = null;
 
-        if (task.getTaskId() != 0) {
-            //変換処理の場合
+        if(task.getTaskId() != 0) {
+            //変更処理の場合
 
             //楽観ロック
             int updateCount = taskRepository.update(task);
@@ -60,10 +62,10 @@ public class TaskServiceImpl implements TaskService {
             //完了メッセージをセット
             completeMessage = Constants.EDIT_COMPLETE;
             return completeMessage;
-        } else {
+
+        }else {
             //登録処理の場合
             taskRepository.save(task);
-
             //完了メッセージをセット
             completeMessage = Constants.REGISTER_COMPLETE;
             return completeMessage;
@@ -80,10 +82,10 @@ public class TaskServiceImpl implements TaskService {
     public TaskForm getTask(int taskId) {
 
         //タスクを取得
-        Task task = taskRepository.getTask(taskId);
+        Task task =taskRepository.getTask(taskId);
 
         //変換処理
-        TaskForm taskForm = convertToTaskForm(task);
+        TaskForm taskForm =convertToTaskForm(task);
 
         return taskForm;
     }
@@ -99,13 +101,17 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     public String delete(int taskId) {
 
+
         //削除処理
         taskRepository.delete(taskId);
 
         //完了メッセージをセット
         String completeMessage = Constants.DELETE_COMPLETE;
         return completeMessage;
+
     }
+
+
 
     /**
      * タスクフォームをタスクエンティティに変換するメソッドです。
@@ -133,6 +139,7 @@ public class TaskServiceImpl implements TaskService {
      */
     @Override
     public TaskForm convertToTaskForm(Task task) {
+
         TaskForm taskForm = new TaskForm();
         taskForm.setTaskId(task.getTaskId());
         taskForm.setTitle(task.getTitle());
@@ -142,4 +149,5 @@ public class TaskServiceImpl implements TaskService {
         taskForm.setUpdatedAt(task.getUpdatedAt());
         return taskForm;
     }
+
 }

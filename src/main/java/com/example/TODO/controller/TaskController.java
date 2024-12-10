@@ -135,7 +135,7 @@ public class TaskController {
     /**
      * タスクの削除確認画面を表示するメソッドです。
      *
-     * @param taskForm タスクのフォームデータ
+     * @param taskId タスクのフォームデータ
      * @param model タスク一覧をViewに渡すためのSpringのModelオブジェクト
      * @return "task/confirm" - タスク確認画面のHTMLテンプレートのパス
      */
@@ -167,5 +167,11 @@ public class TaskController {
         redirectAttributes.addFlashAttribute("completeMessage", completeMessage);
         
         return "redirect:/task/complete";
+    }
+
+    @GetMapping("/task/back")
+    public String backToEditPage(TaskForm taskForm, Model model){
+        model.addAttribute("taskForm", taskForm);
+        return "task/edit";
     }
 }

@@ -32,7 +32,7 @@
                     <input type="datetime-local" class="form-control" name="deadline" th:value="*{deadline}">
                     <div th:if="${#fields.hasErrors('deadline')}" th:errors="*{deadline}" class="text-danger"></div>
                 </div>
-                <div class="form-group mb-3">
+                <div class="form-group mb-3 th:if="${taskForm.taskId} !=0"">
                     <label>status</label>
                     <select name="status">
                         <option value="1" th:selected="*{status == 1}">未着手</option>
@@ -47,7 +47,7 @@
 
                 <!-- 送信ボタン -->
                 <button type="submit" class="btn btn-primary" value="Confirm">Confirm</button>
-                <a type="button" class="btn btn-outline-secondary" th:href="@{/task/list}" th:object="${taskForm}">back</a>
+                <a type="button" class="btn btn-outline-secondary" th:href="@{/task/list}">back</a>
             </form>
         </div>
 

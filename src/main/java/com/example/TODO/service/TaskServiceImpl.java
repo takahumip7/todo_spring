@@ -49,18 +49,18 @@ public class TaskServiceImpl implements TaskService {
         //完了メッセージを宣言
         String completeMessage = null;
 
-        if (task.getTaskId() != 0){
+        if (task.getTaskId() != 0) {
             //変換処理の場合
 
             //楽観ロック
             int updateCount = taskRepository.update(task);
-            if (updateCount == 0){
+            if (updateCount == 0) {
                 throw new OptimisticLockingFailureException("楽観ロックエラー");
             }
             //完了メッセージをセット
             completeMessage = Constants.EDIT_COMPLETE;
             return completeMessage;
-        }else {
+        } else {
             //登録処理の場合
             taskRepository.save(task);
 
@@ -77,7 +77,7 @@ public class TaskServiceImpl implements TaskService {
      * @return 対応するタスクフォーム
      */
     @Override
-    public TaskForm getTask(int taskId){
+    public TaskForm getTask(int taskId) {
 
         //タスクを取得
         Task task = taskRepository.getTask(taskId);
@@ -97,7 +97,7 @@ public class TaskServiceImpl implements TaskService {
      */
     @Override
     @Transactional
-    public String delete(int taskId){
+    public String delete(int taskId) {
 
         //削除処理
         taskRepository.delete(taskId);
@@ -114,7 +114,7 @@ public class TaskServiceImpl implements TaskService {
      * @return 変換されたタスクエンティティ
      */
     @Override
-    public Task convertToTask(TaskForm taskForm){
+    public Task convertToTask(TaskForm taskForm) {
         Task task = new Task();
         task.setTaskId(taskForm.getTaskId());
         task.setTitle(taskForm.getTitle());
@@ -132,7 +132,7 @@ public class TaskServiceImpl implements TaskService {
      * @return 変換されたタスクフォーム
      */
     @Override
-    public TaskForm convertToTaskForm(Task task){
+    public TaskForm convertToTaskForm(Task task) {
         TaskForm taskForm = new TaskForm();
         taskForm.setTaskId(task.getTaskId());
         taskForm.setTitle(task.getTitle());

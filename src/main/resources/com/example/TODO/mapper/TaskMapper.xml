@@ -21,6 +21,11 @@
         SELECT * FROM task where taskId = #{taskId} and deleteFlg = 0;
     </select>
 
+    <!-- タスクの削除 -->
+    <delete id="delete">
+        DELETE FROM task WHERE taskId = #{taskId} and deleteFlg = 0;
+    </delete>
+
     <!-- タスクの更新 -->
     <update id="update" parameterType="com.example.TODO.entity.Task">
         UPDATE task SET title = #{title}, description = #{description}, deadline = #{deadline}, status = #{status}, updated_at = CURRENT_TIMESTAMP WHERE taskId = #{taskId} and updated_at = #{updatedAt};

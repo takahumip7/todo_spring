@@ -130,4 +130,41 @@ public class TaskController {
     public String showCompletePage(){
         return "task/complete";
     }
+
+    /**
+     * タスクの削除確認画面を表示するメソッドです。
+     *
+     * @param taskForm タスクのフォームデータ
+     * @param model タスク一覧をViewに渡すためのSpringのModelオブジェクト
+     * @return "task/confirm" - タスク確認画面のHTMLテンプレートのパス
+     */
+    @GetMapping(value = "/task/delete")
+    public String showDeleteForm(@RequestParam("taskId") int taskId, Model model){
+        // タスクIDに基づいてタスクを取得
+        TaskForm taskForm = taskService.getTask(taskId);
+
+        model.addAttribute("taskForm", taskForm);
+        return "task/deleteConfirm";
+    }
+
+    /**
+     * タスクを削除するメソッドです。
+     *
+     * @param taskForm タスクのフォームデータ
+     * @param bindingResult バリデーション結果を保持するオブジェクト
+     * @param redirectAttributes リダイレクト時に属性を渡すためのSpringのRedirectAttributesオブジェクト
+     * @param model タスク一覧をViewに渡すためのSpringのModelオブジェクト
+     * @return "redirect:/task/complete" - タスク確認画面へのリダイレクト
+     */
+    @PostMapping(value = "/task/delete")
+    public String deleteTask(@RequestParam("taskId") int taskId, RedirectAttributes redirectAttributes, Model model){
+
+        //保存処理
+        String completeMessage = taskService.delete(taskId);
+
+        //redirect先に値を渡す
+        redirectAttributes.addFlashAttribute("completeMessage", completeMessage);
+        
+        return "redirect:/task/complete";
+    }
 }

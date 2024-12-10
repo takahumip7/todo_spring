@@ -71,24 +71,6 @@ public class TaskServiceImpl implements TaskService {
     }
 
     /**
-     * タスクフォームをタスクエンティティに変換するメソッドです。
-     *
-     * @param taskForm タスクフォーム
-     * @return 変換されたタスクエンティティ
-     */
-    @Override
-    public Task convertToTask(TaskForm taskForm){
-        Task task = new Task();
-        task.setTaskId(taskForm.getTaskId());
-        task.setTitle(taskForm.getTitle());
-        task.setDescription(taskForm.getDescription());
-        task.setDeadline(taskForm.getDeadline());
-        task.setStatus(taskForm.getStatus());
-        task.setUpdatedAt(taskForm.getUpdatedAt());
-        return task;
-    }
-
-    /**
      * タスクIDに基づいて1件のタスクを取得し、対応するタスクフォームに変換するメソッドです。
      *
      * @param taskId タスクID
@@ -104,6 +86,43 @@ public class TaskServiceImpl implements TaskService {
         TaskForm taskForm = convertToTaskForm(task);
 
         return taskForm;
+    }
+
+    /**
+     * タスクを削除するメソッドです。
+     *
+     * @param task タスクエンティティ
+     * @return String 完了メッセージ
+     * @throws OptimisticLockingFailureException 楽観ロックエラーが発生した場合
+     */
+    @Override
+    @Transactional
+    public String delete(int taskId){
+
+        //削除処理
+        taskRepository.delete(taskId);
+
+        //完了メッセージをセット
+        String completeMessage = Constants.DELETE_COMPLETE;
+        return completeMessage;
+    }
+
+    /**
+     * タスクフォームをタスクエンティティに変換するメソッドです。
+     *
+     * @param taskForm タスクフォーム
+     * @return 変換されたタスクエンティティ
+     */
+    @Override
+    public Task convertToTask(TaskForm taskForm){
+        Task task = new Task();
+        task.setTaskId(taskForm.getTaskId());
+        task.setTitle(taskForm.getTitle());
+        task.setDescription(taskForm.getDescription());
+        task.setDeadline(taskForm.getDeadline());
+        task.setStatus(taskForm.getStatus());
+        task.setUpdatedAt(taskForm.getUpdatedAt());
+        return task;
     }
 
     /**

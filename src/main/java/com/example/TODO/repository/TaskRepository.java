@@ -60,4 +60,14 @@ public class TaskRepository {
     public int update(Task task){
         return taskMapper.update(task);
     }
+
+    /**
+     * タスクを削除します。
+     *
+     * @param task 削除するタスク
+     * @return 削除された行数
+     */
+    public int delete(int taskId){
+        return taskMapper.delete(taskId);
+    }
 }
